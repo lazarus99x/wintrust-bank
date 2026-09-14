@@ -17,7 +17,7 @@ export default function SmartsuppChat() {
     script.type = "text/javascript";
     script.innerHTML = `
 var _smartsupp = _smartsupp || {};
-_smartsupp.key = '8edb3e4edde733a14459fc28c30fcabcc7d81811';
+_smartsupp.key = 'b13959a491dcf291b7744852f00c414d004d9e66';
 window.smartsupp||(function(d) {
   var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
   s=d.getElementsByTagName('script')[0];c=d.createElement('script');
