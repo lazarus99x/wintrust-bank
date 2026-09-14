@@ -194,7 +194,7 @@ export default function LandingPage() {
             <span className="h-4 w-px bg-border-muted" />
             <span className="flex items-center gap-1.5 text-xs text-text-muted">
               <Phone className="h-3.5 w-3.5 text-primary" />
-              +1 (909) 703-3627
+              +1 (564) 222-6805
             </span>
             <span className="flex items-center gap-1.5 text-xs text-text-muted">
               <Building2 className="h-3.5 w-3.5 text-primary" />
@@ -697,10 +697,10 @@ export default function LandingPage() {
                 <li className="flex items-start gap-2">
                   <Phone className="mt-0.5 h-4 w-4 text-primary shrink-0" />
                   <a
-                    href="tel:+19097033627"
+                    href="tel:+15642226805"
                     className="text-sm text-text-muted transition-colors hover:text-text-secondary"
                   >
-                    +1 (909) 703-3627
+                    +1 (564) 222-6805
                   </a>
                 </li>
                 <li className="flex items-start gap-2">
@@ -724,7 +724,7 @@ export default function LandingPage() {
                   reserved. Member FDIC. Equal Housing Lender.
                 </p>
                 <p className="text-xs text-text-muted">
-                  Washington DC, USA &nbsp;&bull;&nbsp; +1 (909) 703-3627
+                  Washington DC, USA &nbsp;&bull;&nbsp; +1 (564) 222-6805
                 </p>
               </div>
               <div className="flex gap-4 text-xs text-text-muted">
