@@ -58,7 +58,8 @@ export const metadata: Metadata = {
       "Experience premium digital banking with Wintrust Bank. Secure accounts, intelligent transfers, multi-currency support, and 24/7 dedicated support.",
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
   },
 };
 
