@@ -191,7 +191,7 @@ export default function DepositPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <CopyField label="Bank Name" value="RiverStone Union Financial Services, Inc." />
+                <CopyField label="Bank Name" value="Wintrust Bank Financial Services, Inc." />
                 <CopyField label="Routing Number (ABA)" value="021000021" />
                 <CopyField label="Account Number" value={primaryAccount.account_number} />
                 <CopyField label="Account Name" value={primaryAccount.account_name} />

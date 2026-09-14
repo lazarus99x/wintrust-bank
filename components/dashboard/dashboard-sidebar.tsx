@@ -87,7 +87,7 @@ export default function DashboardSidebar({
               <BankIcon className="h-5 w-5 text-white" />
             </div>
             <span className="font-display text-lg font-bold tracking-tight text-text-primary">
-              River<span className="text-primary">Stone</span>Union
+              Wintrust<span className="text-primary"> Bank</span>
             </span>
           </Link>
           <button
