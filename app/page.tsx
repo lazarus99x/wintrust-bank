@@ -198,7 +198,7 @@ export default function LandingPage() {
             </span>
             <span className="flex items-center gap-1.5 text-xs text-text-muted">
               <Building2 className="h-3.5 w-3.5 text-primary" />
-              Washington DC, USA
+              7555 N. Western Ave., Chicago, IL
             </span>
           </nav>
 
@@ -691,7 +691,13 @@ export default function LandingPage() {
                 <li className="flex items-start gap-2">
                   <MapPin className="mt-0.5 h-4 w-4 text-primary shrink-0" />
                   <span className="text-sm text-text-muted">
-                    Washington DC, USA
+                    7555 N. Western Ave., Chicago, IL 60645
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <MapPin className="mt-0.5 h-4 w-4 text-primary shrink-0" />
+                  <span className="text-sm text-text-muted">
+                    1180 E. Higgins Rd., Schaumburg, IL
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
@@ -724,7 +730,7 @@ export default function LandingPage() {
                   reserved. Member FDIC. Equal Housing Lender.
                 </p>
                 <p className="text-xs text-text-muted">
-                  Washington DC, USA &nbsp;&bull;&nbsp; +1 (564) 222-6805
+                  7555 N. Western Ave., Chicago, IL 60645 &nbsp;&bull;&nbsp; +1 (564) 222-6805
                 </p>
               </div>
               <div className="flex gap-4 text-xs text-text-muted">
