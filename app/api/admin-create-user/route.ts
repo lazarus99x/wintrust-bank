@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { adminClient } from "@/lib/admin-supabase";
 import { generateAccountNumber } from "@/lib/account-number";
+import { sendWelcomeEmail } from "@/lib/email";
 
 /**
  * POST /api/admin-create-user
@@ -83,6 +84,17 @@ export async function POST(request: Request) {
         profileId: profile.id,
       });
     }
+
+    // Send welcome email (async, doesn't block response)
+    sendWelcomeEmail({
+      email,
+      fullName,
+      accountNumber,
+      accountType: accountType || "checking",
+      temporaryPassword: password,
+    }).then((sent) => {
+      if (!sent) console.warn(`Welcome email not sent to ${email} — SMTP may not be configured`);
+    });
 
     return NextResponse.json({
       success: true,

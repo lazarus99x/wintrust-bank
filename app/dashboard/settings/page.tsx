@@ -87,7 +87,7 @@ export default function SettingsPage() {
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", user.id)
+        .eq("user_id", user.id)
         .single();
 
       if (!error && data) {
@@ -121,17 +121,14 @@ export default function SettingsPage() {
       const supabase = createClient();
       const { error } = await supabase
         .from("profiles")
-        .upsert(
-          {
-            id: user.id,
-            full_name: fullName,
-            email: email,
-            phone: phone,
-            address: address,
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: "id" }
-        );
+        .update({
+          full_name: fullName,
+          email: email,
+          phone: phone,
+          address: address,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("user_id", user.id);
 
       setIsSaving(false);
       if (error) {
@@ -207,7 +204,7 @@ export default function SettingsPage() {
     const { error } = await supabase
       .from("profiles")
       .update({ avatar_url: null, updated_at: new Date().toISOString() })
-      .eq("id", user.id);
+      .eq("user_id", user.id);
 
     if (error) {
       toast.error("Failed to remove avatar: " + error.message);

@@ -673,7 +673,7 @@ function UsersTab() {
                           <Key className="w-3 h-3 mr-1" /> Reset Pwd
                         </Button>
                         <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white text-xs" onClick={async () => {
-                          const res = await fetch("/api/admin-action", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "verify_kyc", userId: u.user_id }) });
+                          const res = await fetch("/api/admin-action", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "verify_kyc", userId: u.id }) });
                           const d = await res.json();
                           toast.success(d.message || "KYC verified");
                         }}>
@@ -1331,6 +1331,8 @@ function SettingsTab() {
   const [profilePhone, setProfilePhone] = useState("");
   const [isProfileSaving, setIsProfileSaving] = useState(false);
   const [emailChangePending, setEmailChangePending] = useState(false);
+  const [profileAvatarUrl, setProfileAvatarUrl] = useState<string | null>(null);
+  const [isProfileAvatarUploading, setIsProfileAvatarUploading] = useState(false);
 
   const fetchSettings = useCallback(async () => {
     setLoading(true);
@@ -1362,7 +1364,7 @@ function SettingsTab() {
 
       const { data: profile } = await supabase
         .from("profiles")
-        .select("full_name, email, phone")
+        .select("full_name, email, phone, avatar_url")
         .eq("user_id", user.id)
         .single();
 
@@ -1370,6 +1372,7 @@ function SettingsTab() {
         setProfileFullName(profile.full_name || "");
         setProfileEmail(profile.email || user.email || "");
         setProfilePhone(profile.phone || "");
+        setProfileAvatarUrl(profile.avatar_url || null);
       } else {
         setProfileEmail(user.email || "");
       }
@@ -1451,6 +1454,68 @@ function SettingsTab() {
           <h3 className="text-lg font-semibold text-white">My Profile</h3>
         </div>
         <div className="space-y-4">
+          {/* Avatar */}
+          <div className="flex items-center gap-4">
+            <Avatar className="h-16 w-16 rounded-2xl">
+              {profileAvatarUrl ? (
+                <AvatarImage src={profileAvatarUrl} alt={profileFullName || "Admin"} className="object-cover" />
+              ) : (
+                <AvatarFallback className="rounded-2xl bg-gradient-to-br from-blue-600/20 to-blue-600/10 text-lg font-bold text-blue-400">
+                  {(profileFullName || "A").charAt(0).toUpperCase()}
+                </AvatarFallback>
+              )}
+            </Avatar>
+            <div>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/gif,image/webp"
+                id="admin-avatar-upload"
+                className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setIsProfileAvatarUploading(true);
+                  const formData = new FormData();
+                  formData.append("file", file);
+                  const supabase = createClient();
+                  const { data: { user } } = await supabase.auth.getUser();
+                  formData.append("userId", user?.id || "");
+                  const res = await fetch("/api/avatar-upload", { method: "POST", body: formData });
+                  const data = await res.json();
+                  if (data.success) {
+                    setProfileAvatarUrl(data.avatarUrl);
+                    toast.success("Profile picture updated!");
+                  } else {
+                    toast.error(data.error || "Upload failed");
+                  }
+                  setIsProfileAvatarUploading(false);
+                  e.target.value = "";
+                }}
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-xs border-white/10 text-white/80"
+                disabled={isProfileAvatarUploading}
+                onClick={() => document.getElementById("admin-avatar-upload")?.click()}
+              >
+                {isProfileAvatarUploading ? <><Loader2 className="w-3 h-3 mr-1 animate-spin" /> Uploading...</> : profileAvatarUrl ? "Change Photo" : "Upload Photo"}
+              </Button>
+              {profileAvatarUrl && (
+                <Button variant="ghost" size="sm" className="text-xs text-red-400 ml-1" onClick={async () => {
+                  const supabase = createClient();
+                  const { data: { user } } = await supabase.auth.getUser();
+                  if (!user) return;
+                  const { error } = await supabase.from("profiles").update({ avatar_url: null }).eq("user_id", user.id);
+                  if (error) toast.error(error.message);
+                  else { setProfileAvatarUrl(null); toast.success("Avatar removed"); }
+                }}>
+                  Remove
+                </Button>
+              )}
+              <p className="mt-1 text-[11px] text-white/40">JPEG, PNG, GIF, WebP. Max 2MB.</p>
+            </div>
+          </div>
           <div>
             <label className="text-sm font-medium text-white/60 block mb-1">Full Name</label>
             <Input
