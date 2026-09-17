@@ -238,7 +238,6 @@ export default function AdminPage() {
         </button>
           </div>
         </div>
-      </div>
 
 <div className="flex flex-col md:flex-row gap-4">
         {/* Sidebar Navigation - hidden on mobile, visible on md+ */}
