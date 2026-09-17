@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       .from("avatars")
       .getPublicUrl(filePath);
 
-    const avatarUrl = urlData?.publicUrl || null;
+    const avatarUrl = urlData?.publicUrl ? `${urlData.publicUrl}?t=${Date.now()}` : null;
 
     if (!avatarUrl) {
       return NextResponse.json({ success: false, error: "Failed to generate public URL" });
@@ -91,16 +91,22 @@ export async function POST(request: Request) {
 
     if (profileByAuth) {
       // userId is auth UUID — update by auth UUID
-      await adminClient
+      const { error: updateError } = await adminClient
         .from("profiles")
         .update({ avatar_url: avatarUrl })
         .eq("user_id", userId);
+      if (updateError) {
+        return NextResponse.json({ success: false, error: `Profile update failed: ${updateError.message}` });
+      }
     } else {
       // Try as profile UUID
-      await adminClient
+      const { error: updateError } = await adminClient
         .from("profiles")
         .update({ avatar_url: avatarUrl })
         .eq("id", userId);
+      if (updateError) {
+        return NextResponse.json({ success: false, error: `Profile update failed: ${updateError.message}` });
+      }
     }
 
     return NextResponse.json({ success: true, avatarUrl });

@@ -47,6 +47,24 @@ export default function AdminPage() {
     checkAdminAccess();
   }, []);
 
+  // Re-fetch admin profile when tab switches (avatar may have been updated in settings)
+  useEffect(() => {
+    if (authState !== "admin") return;
+    const fetchProfile = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("avatar_url, full_name")
+        .eq("user_id", user.id)
+        .single();
+      if (profile?.avatar_url) setAdminAvatar(profile.avatar_url);
+      if (profile?.full_name) setAdminName(profile.full_name);
+    };
+    fetchProfile();
+  }, [activeTab, authState]);
+
   async function checkAdminAccess() {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
