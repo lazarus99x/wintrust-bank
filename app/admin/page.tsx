@@ -34,6 +34,8 @@ export default function AdminPage() {
   const router = useRouter();
   const [authState, setAuthState] = useState<"loading" | "login" | "denied" | "admin">("loading");
   const [activeTab, setActiveTab] = useState("overview");
+  const [adminAvatar, setAdminAvatar] = useState<string | null>(null);
+  const [adminName, setAdminName] = useState("Admin");
 
   // Admin login form
   const [email, setEmail] = useState("");
@@ -60,6 +62,18 @@ export default function AdminPage() {
 
     if (data.isAdmin) {
       setAuthState("admin");
+      // Fetch admin's own profile for avatar display in header
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("avatar_url, full_name")
+          .eq("user_id", user.id)
+          .single();
+        if (profile?.avatar_url) setAdminAvatar(profile.avatar_url);
+        if (profile?.full_name) setAdminName(profile.full_name);
+      }
     } else {
       setAuthState("denied");
     }
@@ -204,10 +218,26 @@ export default function AdminPage() {
           <h1 className="text-xl sm:text-3xl font-bold text-foreground">Admin Panel</h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-1">Full control over Wintrust Bank operations</p>
         </div>
-        <button onClick={() => { createClient().auth.signOut().then(() => { setAuthState("login"); }); }}
+        <div className="flex items-center gap-3">
+          <Avatar className="h-9 w-9 rounded-lg ring-1 ring-white/10">
+            {adminAvatar ? (
+              <AvatarImage src={adminAvatar} alt={adminName} className="object-cover rounded-lg" />
+            ) : (
+              <AvatarFallback className="rounded-lg bg-blue-600/20 text-sm font-semibold text-blue-400">
+                {adminName.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            )}
+          </Avatar>
+          <div className="hidden sm:block text-right">
+            <p className="text-sm font-medium text-white/90">{adminName}</p>
+            <p className="text-xs text-white/40">Administrator</p>
+          </div>
+          <button onClick={() => { createClient().auth.signOut().then(() => { setAuthState("login"); }); }}
           className="flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 text-xs text-white/50 hover:bg-white/5 hover:text-white/80 transition-colors shrink-0">
           Sign Out
         </button>
+          </div>
+        </div>
       </div>
 
 <div className="flex flex-col md:flex-row gap-4">
