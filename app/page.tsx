@@ -194,7 +194,7 @@ export default function LandingPage() {
             <span className="h-4 w-px bg-border-muted" />
             <span className="flex items-center gap-1.5 text-xs text-text-muted">
               <Phone className="h-3.5 w-3.5 text-primary" />
-              +1 (564) 222-6805
+              +15642226805
             </span>
             <span className="flex items-center gap-1.5 text-xs text-text-muted">
               <Building2 className="h-3.5 w-3.5 text-primary" />
@@ -706,7 +706,7 @@ export default function LandingPage() {
                     href="tel:+15642226805"
                     className="text-sm text-text-muted transition-colors hover:text-text-secondary"
                   >
-                    +1 (564) 222-6805
+                    +15642226805
                   </a>
                 </li>
                 <li className="flex items-start gap-2">
@@ -730,7 +730,7 @@ export default function LandingPage() {
                   reserved. Member FDIC. Equal Housing Lender.
                 </p>
                 <p className="text-xs text-text-muted">
-                  7555 N. Western Ave., Chicago, IL 60645 &nbsp;&bull;&nbsp; +1 (564) 222-6805
+                  7555 N. Western Ave., Chicago, IL 60645 &nbsp;&bull;&nbsp; +15642226805
                 </p>
               </div>
               <div className="flex gap-4 text-xs text-text-muted">
